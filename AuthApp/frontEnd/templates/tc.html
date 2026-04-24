@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms &amp; Conditions — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="tc">
+  <div class="auth-card">
+    <a class="back-link" href="signup.html">← Back to sign up</a>
+    <div class="brand">
+      <div class="brand-icon">T&amp;C</div>
+      <h1>Terms &amp; Conditions</h1>
+      <p>Please read carefully before creating your account</p>
+    </div>
+
+    <div class="tc-scroll">
+      <h4>1. Acceptance of Terms</h4>
+      By accessing or using AuthApp, you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree to these terms, you may not use the service.
+
+      <h4>2. Account Security</h4>
+      You are solely responsible for maintaining the confidentiality of your login credentials, App Key, and any access tokens. Passwords must be at least 12 characters. Spaces and hyphens are permitted and encouraged for stronger passphrases. Do not share your credentials with anyone.
+
+      <h4>3. Authentication Methods</h4>
+      The system employs OTP (One-Time Password), SSO (Single Sign-On via OAuth 2.0), and App Keys for multi-layered verification. You agree to use these mechanisms as intended. Attempting to bypass or circumvent authentication is prohibited.
+
+      <h4>4. Session Management</h4>
+      Sessions automatically expire after a period of inactivity to protect against tailgating, shoulder surfing, and unauthorized offline access. You are responsible for logging out on shared or public devices.
+
+      <h4>5. Data Privacy</h4>
+      Your personal data including name, email, and device information is collected to provide authentication services. This data is stored securely, encrypted at rest, and is never sold to third parties. You may request deletion of your data at any time by contacting support.
+
+      <h4>6. Prohibited Use</h4>
+      You may not use this system for unauthorized access attempts, brute-force attacks, credential stuffing, or any other malicious activity. Violations will result in permanent account suspension and may be reported to law enforcement authorities.
+
+      <h4>7. Rate Limiting &amp; Lockouts</h4>
+      To protect against automated attacks, repeated failed login attempts will trigger a temporary lockout. This is a security feature, not a penalty. You may reset access at any time via the password reset flow.
+
+      <h4>8. Intellectual Property</h4>
+      All content, design, and code within AuthApp is the property of the development team. Unauthorized reproduction or redistribution is prohibited.
+
+      <h4>9. Limitation of Liability</h4>
+      AuthApp is provided "as is" for educational and project purposes. The team makes no warranties regarding uptime, data integrity, or fitness for a particular purpose.
+
+      <h4>10. Changes to Terms</h4>
+      We reserve the right to update these Terms at any time. Continued use of the service after changes are posted constitutes your acceptance of the revised terms. You will be notified of significant changes via email.
+    </div>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="tcCheck"/>
+      I have read and agree to the Terms &amp; Conditions
+    </label>
+    <label class="checkbox-row">
+      <input type="checkbox" id="newsletterCheck"/>
+      I agree to receive security updates and product news via email
+    </label>
+
+    <button class="btn btn-primary" id="acceptBtn" onclick="acceptTC()" disabled>
+      Accept &amp; continue
+    </button>
+    <button class="btn btn-outline" onclick="window.location.href='signup.html'">
+      Decline
+    </button>
+  </div>
+
+  <script>
+    document.getElementById('tcCheck').addEventListener('change', function() {
+      document.getElementById('acceptBtn').disabled = !this.checked;
+    });
+    function acceptTC() {
+      sessionStorage.setItem('tcAccepted', 'true');
+      window.location.href = 'signup.html';
+    }
+  </script>
+</body>
+</html>

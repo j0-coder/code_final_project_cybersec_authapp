@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Successful — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="success">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="big-icon success">✓</div>
+      <h1>Welcome back!</h1>
+      <p>You've signed in successfully</p>
+    </div>
+
+    <div class="user-card" id="successUserCard">
+      <div class="avatar" id="successAvatar">JD</div>
+      <div>
+        <div class="user-card-name"  id="successName">Loading…</div>
+        <div class="user-card-email" id="successEmail"></div>
+      </div>
+    </div>
+
+    <div class="alert alert-success">
+      <span class="alert-icon">✓</span>
+      <span>Identity verified &nbsp;·&nbsp; Session started &nbsp;·&nbsp; OTP confirmed</span>
+    </div>
+
+    <!-- Dashboard skeleton preview -->
+    <div class="dash-preview">
+      <div class="dash-nav-bar">
+        <div class="dash-nav-logo">AuthApp</div>
+        <div style="font-size:0.75rem;color:var(--text3)">Dashboard</div>
+      </div>
+      <div class="skel" style="width:70%"></div>
+      <div class="skel" style="width:50%"></div>
+      <div class="skel-cards">
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+      </div>
+    </div>
+
+    <p class="text-center text-sm text-muted" id="redirectMsg" style="margin-top:1rem">
+      Redirecting to dashboard in <span id="redirectCount">3</span>s…
+    </p>
+
+    <button class="btn btn-primary" style="margin-top:0.75rem"
+            onclick="window.location.href='dashboard.html'">
+      Go to dashboard
+    </button>
+  </div>
+
+  <a href="login.html" class="btn">Return to Login</a>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = getUser();
+      if (!user) { window.location.href = 'login.html'; return; }
+      document.getElementById('successName').textContent  = user.name  || 'User';
+      document.getElementById('successEmail').textContent = user.email || '';
+      document.getElementById('successAvatar').textContent = getInitials(user.name || 'U');
+
+      let count = 3;
+      const interval = setInterval(() => {
+        count--;
+        document.getElementById('redirectCount').textContent = count;
+        if (count <= 0) { clearInterval(interval); window.location.href = 'dashboard.html'; }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

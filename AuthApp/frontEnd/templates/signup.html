@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="signup">
+
+  <div class="auth-card">
+
+    <a class="back-link" href="login.html">← Back to login</a>
+
+    <div class="brand">
+      <div class="brand-icon">✦</div>
+      <h1>Create your account</h1>
+      <p>Step 1 of 3 — Basic information</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="signup-steps">
+      <div class="signup-step">
+        <div class="signup-step-dot active">1</div>
+        <div class="signup-step-label active">Info</div>
+      </div>
+      <div class="signup-step">
+        <div class="signup-step-dot">2</div>
+        <div class="signup-step-label">Password</div>
+      </div>
+      <div class="signup-step">
+        <div class="signup-step-dot">3</div>
+        <div class="signup-step-label">Verify</div>
+      </div>
+    </div>
+
+    <div id="signupAlert" class="alert alert-danger" style="display:none"></div>
+
+    <form id="signupForm" novalidate>
+
+      <div class="field">
+        <label class="field-label" for="name">Full name</label>
+        <input class="field-input" type="text" id="name" name="name"
+               placeholder="Juan Dela Cruz" autocomplete="name" required/>
+        <span class="field-error" style="display:none"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">Email address</label>
+        <input class="field-input" type="email" id="email" name="email"
+               placeholder="you@example.com" autocomplete="email" required/>
+        <span class="field-error" style="display:none"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="phone">Mobile number <span style="color:var(--text3);font-weight:400">(for OTP)</span></label>
+        <input class="field-input" type="tel" id="phone" name="phone"
+               placeholder="+63 9XX XXX XXXX" autocomplete="tel"/>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="password">Password</label>
+        <div class="pw-wrap">
+          <input class="field-input" type="password" id="password" name="password"
+                 placeholder="Create a strong password" autocomplete="new-password" required/>
+          <button type="button" class="pw-toggle" id="pwToggle1">show</button>
+        </div>
+        <div class="strength-bars" id="strengthBars">
+          <div class="strength-bar"></div>
+          <div class="strength-bar"></div>
+          <div class="strength-bar"></div>
+          <div class="strength-bar"></div>
+        </div>
+        <div class="strength-label" id="strengthLabel"></div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="password2">Confirm password</label>
+        <div class="pw-wrap">
+          <input class="field-input" type="password" id="password2" name="password2"
+                 placeholder="Re-enter your password" autocomplete="new-password" required/>
+          <button type="button" class="pw-toggle" id="pwToggle2">show</button>
+        </div>
+        <span class="field-error" style="display:none"></span>
+      </div>
+
+      <!-- Password requirements checklist -->
+      <div class="req-list">
+        <p>Password requirements</p>
+        <div class="req-item neutral" id="reqLen">
+          <span class="req-check">○</span> At least 12 characters
+        </div>
+        <div class="req-item neutral" id="reqMixed">
+          <span class="req-check">○</span> Uppercase + lowercase letters
+        </div>
+        <div class="req-item neutral" id="reqNum">
+          <span class="req-check">○</span> At least one number
+        </div>
+        <div class="req-item neutral" id="reqSymbol">
+          <span class="req-check">○</span> Symbol, space, or hyphen ( - )
+        </div>
+      </div>
+
+      <label class="checkbox-row">
+        <input type="checkbox" id="termsCheck"/>
+        I agree to the <a href="tc.html" target="_blank">Terms &amp; Conditions</a>
+        and <a href="#" target="_blank">Privacy Policy</a>
+      </label>
+
+      <label class="checkbox-row">
+        <input type="checkbox" id="newsletterCheck"/>
+        I'd like to receive security updates and product news
+      </label>
+
+      <button class="btn btn-primary" type="submit" id="signupBtn">Create account</button>
+
+    </form>
+
+    <div class="footer-link">
+      Already have an account? <a href="login.html">Sign in</a>
+    </div>
+
+  </div>
+
+  <form onsubmit="event.preventDefault(); window.location.href='success.html';">
+</body>
+</html>

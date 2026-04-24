@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forgot Password — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="forgot">
+  <div class="auth-card">
+    <a class="back-link" href="login.html">← Back to login</a>
+    <div class="brand">
+      <div class="brand-icon warning">?</div>
+      <h1>Reset your password</h1>
+      <p>Enter your email and we'll send a reset link</p>
+    </div>
+    <div class="step-dots">
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div id="forgotAlert" class="alert" style="display:none"></div>
+    <form id="forgotForm" novalidate>
+      <div class="field">
+        <label class="field-label" for="email">Email address</label>
+        <input class="field-input" type="email" id="email" name="email"
+               placeholder="you@example.com" autocomplete="email" required/>
+        <span class="field-hint">We'll send a secure link valid for 15 minutes</span>
+        <span class="field-error" style="display:none"></span>
+      </div>
+      <div class="step-box">
+        <p>What happens next?</p>
+        <div class="step-line">1. Check your inbox for the reset email</div>
+        <div class="step-line">2. Click the link (valid for 15 minutes)</div>
+        <div class="step-line">3. Set a new password &amp; verify with OTP</div>
+      </div>
+      <button class="btn btn-primary" type="submit" id="forgotBtn">Send reset link</button>
+      <button class="btn btn-outline" type="button" onclick="window.location.href='login.html'">Back to login</button>
+    </form>
+    <div class="note">For security, we never confirm whether an email is registered.</div>
+  </div>
+  <form onsubmit="event.preventDefault(); window.location.href='login.html';">
+</body>
+</html>

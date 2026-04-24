@@ -1,0 +1,276 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+  <style>
+    body { display: block; background: var(--bg); padding: 0; min-height: 100vh; }
+
+    /* ── Top Nav ── */
+    .topnav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 1.5rem; height: 56px; gap: 1rem;
+    }
+    .topnav-logo { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; flex: 1; }
+    .topnav-nav  { display: flex; gap: 0.25rem; }
+    .nav-link {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem; color: var(--text2);
+      border-radius: var(--radius); cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    .nav-link:hover { background: var(--bg3); color: var(--text); }
+    .nav-link.active { background: var(--bg3); color: var(--text); font-weight: 500; }
+    .topnav-user { display: flex; align-items: center; gap: 0.625rem; cursor: pointer; }
+    .topnav-name { font-size: 0.875rem; font-weight: 500; }
+    .topnav-logout {
+      font-size: 0.8125rem; color: var(--text2);
+      background: none; border: 1px solid var(--border2);
+      border-radius: var(--radius); padding: 0.375rem 0.75rem;
+      cursor: pointer; font-family: var(--font-sans);
+    }
+    .topnav-logout:hover { background: var(--bg3); }
+
+    /* ── Main content ── */
+    .dash-main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* ── Stat cards ── */
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.25rem 1.25rem 1rem;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+    .stat-sub   { font-size: 0.75rem; color: var(--text3); margin-top: 0.375rem; }
+
+    /* ── Section header ── */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .section-title  { font-size: 0.9375rem; font-weight: 600; }
+    .section-action { font-size: 0.8125rem; color: var(--accent); cursor: pointer; }
+
+    /* ── Datagrid ── */
+    .dg-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .dg-toolbar { display: flex; align-items: center; gap: 0.625rem; padding: 0.875rem 1rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .dg-search {
+      flex: 1; min-width: 140px;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border2); border-radius: var(--radius);
+      font-size: 0.875rem; background: var(--bg); color: var(--text);
+      font-family: var(--font-sans); outline: none;
+    }
+    .dg-search:focus { border-color: var(--accent); }
+    .dg-select { padding: 0.5rem 0.75rem; border: 1px solid var(--border2); border-radius: var(--radius); font-size: 0.875rem; background: var(--bg); color: var(--text); font-family: var(--font-sans); cursor: pointer; outline: none; }
+    .dg-btn { padding: 0.5rem 0.875rem; border-radius: var(--radius); font-size: 0.8125rem; cursor: pointer; font-family: var(--font-sans); border: 1px solid var(--border2); background: var(--bg2); color: var(--text); }
+    .dg-btn.primary { background: var(--accent-bg); color: var(--accent); border-color: var(--accent-border); font-weight: 500; }
+
+    .dg-table { width: 100%; border-collapse: collapse; }
+    .dg-table th {
+      padding: 0.625rem 1rem; text-align: left;
+      background: var(--bg); color: var(--text2);
+      font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border2);
+    }
+    .dg-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.875rem; vertical-align: middle; }
+    .dg-table tr:last-child td { border-bottom: none; }
+    .dg-table tr:hover td { background: var(--bg3); }
+    .dg-table input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
+
+    .u-cell { display: flex; align-items: center; gap: 0.625rem; }
+    .u-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; flex-shrink: 0; }
+    .u-name  { font-weight: 500; font-size: 0.875rem; }
+    .u-email { font-size: 0.75rem; color: var(--text2); }
+
+    .pill { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: 0.75rem; font-weight: 500; }
+    .pill-active   { background: var(--success-bg); color: var(--success); }
+    .pill-locked   { background: var(--danger-bg);  color: var(--danger); }
+    .pill-inactive { background: var(--bg4);        color: var(--text3);  }
+    .pill-admin    { background: var(--accent-bg);  color: var(--accent); }
+    .pill-user     { background: var(--bg4);        color: var(--text2);  }
+
+    .act-link { font-size: 0.8125rem; color: var(--accent); cursor: pointer; }
+    .act-link.danger { color: var(--danger); }
+    .act-link + .act-link { margin-left: 0.75rem; }
+
+    .dg-footer { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-top: 1px solid var(--border); font-size: 0.8125rem; color: var(--text2); }
+    .pg-row { display: flex; gap: 4px; }
+    .pg-btn { padding: 4px 9px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg2); font-size: 0.8125rem; cursor: pointer; font-family: var(--font-sans); color: var(--text2); }
+    .pg-btn.active { background: var(--text); color: var(--bg2); border-color: var(--text); }
+  </style>
+</head>
+<body data-page="dashboard">
+
+  <!-- Top navigation -->
+  <nav class="topnav">
+    <div class="topnav-logo">AuthApp</div>
+    <div class="topnav-nav">
+      <div class="nav-link active">Dashboard</div>
+      <div class="nav-link" onclick="window.location.href='appkey.html'">App Key</div>
+      <div class="nav-link" onclick="window.location.href='toc.html'">All pages</div>
+    </div>
+    <div class="topnav-user">
+      <div class="avatar" id="dashAvatar" style="width:32px;height:32px;font-size:0.8125rem">JD</div>
+      <span class="topnav-name" id="dashUserName">Loading…</span>
+    </div>
+    <button class="topnav-logout" id="navLogout">Log out</button>
+  </nav>
+
+  <main class="dash-main">
+
+    <!-- Stat cards -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-label">Total users</div>
+        <div class="stat-value">48</div>
+        <div class="stat-sub">+3 this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active sessions</div>
+        <div class="stat-value" style="color:var(--success)">12</div>
+        <div class="stat-sub">Right now</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Locked accounts</div>
+        <div class="stat-value" style="color:var(--danger)">2</div>
+        <div class="stat-sub">Needs review</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">SSO logins today</div>
+        <div class="stat-value">7</div>
+        <div class="stat-sub">Google · Microsoft</div>
+      </div>
+    </div>
+
+    <!-- User datagrid -->
+    <div class="section-header">
+      <div class="section-title">User management</div>
+      <div class="section-action">Export CSV</div>
+    </div>
+    <div class="dg-wrap">
+      <div class="dg-toolbar">
+        <input class="dg-search" type="text" placeholder="Search users…" id="dgSearch" oninput="filterTable()"/>
+        <select class="dg-select" id="dgRole" onchange="filterTable()">
+          <option value="">All roles</option>
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+        </select>
+        <select class="dg-select" id="dgStatus" onchange="filterTable()">
+          <option value="">All status</option>
+          <option value="Active">Active</option>
+          <option value="Locked">Locked</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+        <button class="dg-btn primary" onclick="window.location.href='signup.html'">+ Add user</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="dg-table" id="dgTable">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="checkAll" onclick="toggleAll(this)"/></th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Last login</th>
+              <th>2FA</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dgBody"></tbody>
+        </table>
+      </div>
+      <div class="dg-footer">
+        <span id="dgCount">Showing 5 of 5 users</span>
+        <div class="pg-row">
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn">2</button>
+          <button class="pg-btn">3</button>
+          <button class="pg-btn">›</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Session idle warning modal -->
+  <div id="sessionModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;align-items:center;justify-content:center;padding:1rem">
+    <div style="background:var(--bg2);border-radius:var(--radius-xl);padding:2rem;max-width:360px;width:100%;text-align:center;border:1px solid var(--warning-border)">
+      <div style="font-size:2.25rem;font-weight:600;color:var(--warning);margin-bottom:0.375rem;font-family:var(--font-mono)" id="sessionCountdown">0:30</div>
+      <div style="font-size:1rem;font-weight:600;margin-bottom:0.5rem">Session expiring soon</div>
+      <p style="font-size:0.875rem;color:var(--text2);margin-bottom:1.5rem">
+        You've been idle. You'll be logged out in 30 seconds to protect your account against tailgating attacks.
+      </p>
+      <button class="btn btn-primary" id="stayBtn" style="margin-bottom:0.5rem">Stay signed in</button>
+      <button class="btn btn-outline" id="logoutNowBtn">Log out now</button>
+    </div>
+  </div>
+
+  <a href="login.html">Logout</a>
+  <script>
+    /* ── Sample user data (replace with API call to GET /api/users) ── */
+    const USERS = [
+      { name: 'Juan Dela Cruz', email: 'juan@example.com',  role: 'Admin', status: 'Active',   last: 'Today, 2:14 PM',     tfa: true,  initials: 'JD', color: 'var(--accent-bg)', colorText: 'var(--accent)' },
+      { name: 'Maria Reyes',    email: 'maria@example.com', role: 'User',  status: 'Active',   last: 'Apr 16, 9:00 AM',    tfa: true,  initials: 'MR', color: 'var(--success-bg)', colorText: 'var(--success)' },
+      { name: 'Carlo Santos',   email: 'carlo@example.com', role: 'User',  status: 'Locked',   last: 'Apr 15, 6:33 PM',    tfa: false, initials: 'CS', color: 'var(--danger-bg)',  colorText: 'var(--danger)' },
+      { name: 'Ana Lim',        email: 'ana@example.com',   role: 'User',  status: 'Inactive', last: 'Apr 10, 11:20 AM',   tfa: false, initials: 'AL', color: 'var(--warning-bg)', colorText: 'var(--warning)' },
+      { name: 'Ben Torres',     email: 'ben@example.com',   role: 'Admin', status: 'Active',   last: 'Today, 8:01 AM',     tfa: true,  initials: 'BT', color: 'var(--accent-bg)', colorText: 'var(--accent)' },
+    ];
+
+    function pillClass(status) {
+      return { Active: 'pill-active', Locked: 'pill-locked', Inactive: 'pill-inactive' }[status] || '';
+    }
+
+    function renderTable(data) {
+      const body = document.getElementById('dgBody');
+      body.innerHTML = data.map(u => `
+        <tr>
+          <td><input type="checkbox"/></td>
+          <td>
+            <div class="u-cell">
+              <div class="u-avatar" style="background:${u.color};color:${u.colorText}">${u.initials}</div>
+              <div>
+                <div class="u-name">${u.name}</div>
+                <div class="u-email">${u.email}</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="pill ${u.role === 'Admin' ? 'pill-admin' : 'pill-user'}">${u.role}</span></td>
+          <td><span class="pill ${pillClass(u.status)}">${u.status}</span></td>
+          <td style="color:var(--text2)">${u.last}</td>
+          <td style="color:${u.tfa ? 'var(--success)' : 'var(--danger)'}">${u.tfa ? '✓ On' : '✗ Off'}</td>
+          <td>
+            <span class="act-link">Edit</span>
+            <span class="act-link danger">${u.status === 'Locked' ? 'Unlock' : 'Lock'}</span>
+          </td>
+        </tr>
+      `).join('');
+      document.getElementById('dgCount').textContent = `Showing ${data.length} of ${USERS.length} users`;
+    }
+
+    function filterTable() {
+      const q      = document.getElementById('dgSearch').value.toLowerCase();
+      const role   = document.getElementById('dgRole').value;
+      const status = document.getElementById('dgStatus').value;
+      const filtered = USERS.filter(u =>
+        (!q      || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)) &&
+        (!role   || u.role   === role) &&
+        (!status || u.status === status)
+      );
+      renderTable(filtered);
+    }
+
+    function toggleAll(master) {
+      document.querySelectorAll('#dgBody input[type=checkbox]').forEach(cb => cb.checked = master.checked);
+    }
+
+    renderTable(USERS);
+  </script>
+</body>
+</html>

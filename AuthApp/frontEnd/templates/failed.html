@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In Failed — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="failed">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="brand-icon danger">!</div>
+      <h1>Sign in failed</h1>
+      <p>Incorrect email or password</p>
+    </div>
+
+    <div class="alert alert-danger">
+      <span class="alert-icon">✕</span>
+      <span>
+        Incorrect credentials. You have <strong id="attemptsLeftMsg">2 attempts</strong> remaining
+        before your account is temporarily locked.
+      </span>
+    </div>
+
+    <!-- Attempt progress bar -->
+    <div class="attempt-bar">
+      <div class="attempt-bar-header">
+        <span>Failed attempts</span>
+        <span id="attemptCount">3 / 5</span>
+      </div>
+      <div class="progress-wrap" style="margin:0">
+        <div class="progress-bar danger" id="attemptBar" style="width:60%"></div>
+      </div>
+    </div>
+
+    <button class="btn btn-danger" onclick="window.location.href='login.html'">Try again</button>
+    <button class="btn btn-outline" onclick="window.location.href='forgot.html'">Reset my password</button>
+
+    <div class="note">
+      After 5 failed attempts your account will be locked for 15 minutes.
+      Your IP address and timestamp are logged per OWASP security guidelines.
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    // Read attempt data passed from login page via URL params
+    const p = new URLSearchParams(window.location.search);
+    const left = parseInt(p.get('attempts') ?? '2');
+    const used = 5 - left;
+    document.getElementById('attemptsLeftMsg').textContent = `${left} attempt${left !== 1 ? 's' : ''}`;
+    document.getElementById('attemptCount').textContent    = `${used} / 5`;
+    document.getElementById('attemptBar').style.width      = ((used / 5) * 100) + '%';
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>App Key — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="appkey">
+  <div class="auth-card">
+    <a class="back-link" href="dashboard.html">← Back to dashboard</a>
+    <div class="brand">
+      <div class="brand-icon">⚿</div>
+      <h1>Your App Key</h1>
+      <p>For authorized API access</p>
+    </div>
+
+    <div id="keyAlert" class="alert" style="display:none"></div>
+
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem">
+      <span class="badge badge-success" id="keyStatus">Active</span>
+    </div>
+
+    <div class="key-block">
+      <span class="key-value" id="keyValue">Loading…</span>
+      <button class="key-btn" id="revealBtn">Reveal</button>
+      <button class="key-btn" id="copyBtn">Copy</button>
+    </div>
+
+    <div class="note">
+      Never share this key publicly. Store it as an environment variable.
+      It is hashed at rest and never stored in plaintext on the server.
+    </div>
+
+    <table class="detail-table">
+      <tr><td>Created</td><td id="keyCreated">—</td></tr>
+      <tr><td>Last used</td><td id="keyLastUsed">—</td></tr>
+      <tr><td>Scope</td><td id="keyScope">—</td></tr>
+      <tr><td>Rate limit</td><td>1,000 req / hour</td></tr>
+    </table>
+
+    <button class="btn btn-primary" id="regenBtn">Regenerate key</button>
+    <button class="btn btn-outline" id="revokeBtn"
+            style="color:var(--danger);border-color:var(--danger-border)">
+      Revoke key
+    </button>
+  </div>
+
+  <!-- Session idle modal -->
+  <div id="sessionModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;align-items:center;justify-content:center;padding:1rem">
+    <div style="background:var(--bg2);border-radius:var(--radius-xl);padding:2rem;max-width:360px;width:100%;text-align:center;border:1px solid var(--border)">
+      <div style="font-size:2rem;font-weight:600;color:var(--warning);margin-bottom:0.5rem" id="sessionCountdown">0:30</div>
+      <div style="font-weight:600;font-size:1rem;margin-bottom:0.5rem">Session expiring</div>
+      <p style="font-size:0.875rem;color:var(--text2);margin-bottom:1.25rem">You've been idle. You'll be logged out soon to protect against tailgating attacks.</p>
+      <button class="btn btn-primary" id="stayBtn" style="margin-bottom:0.5rem">Stay signed in</button>
+      <button class="btn btn-outline" id="logoutNowBtn">Log out now</button>
+    </div>
+  </div>
+
+  <button type="button" onclick="window.location.href='dashboard.html'">Finalize Setup</button>
+</body>
+</html>

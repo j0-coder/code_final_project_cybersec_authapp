@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Sections — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="toc">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="brand-icon">☰</div>
+      <h1>AuthApp</h1>
+      <p>All pages &amp; sections</p>
+    </div>
+
+    <ul class="toc-list">
+      <li class="toc-item" data-url="{% url 'login' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">01</span>
+        <span class="toc-title">Login</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'signup' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">02</span>
+        <span class="toc-title">Sign up</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'otpPage' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">03</span>
+        <span class="toc-title">OTP Verification</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'forgotPage' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">04</span>
+        <span class="toc-title">Forgot password</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'successPage' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">05</span>
+        <span class="toc-title">Successful login</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'failedPage' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">06</span>
+        <span class="toc-title">Failed login</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'lockedPage' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">07</span>
+        <span class="toc-title">Account locked</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'appkeyPage' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">08</span>
+        <span class="toc-title">App Key management</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'dashboard' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">09</span>
+        <span class="toc-title">Dashboard (session manager)</span>
+        <span class="toc-arrow">›</span>
+      </li>
+      <li class="toc-item" data-url="{% url 'tcPage' %}" onclick="redirectToPage(this)">
+        <span class="toc-num">10</span>
+        <span class="toc-title">Terms &amp; Conditions</span>
+        <span class="toc-arrow">›</span>
+      </li>
+    </ul>
+
+    <div class="note" style="margin-top:1rem">
+      This page serves as the sitemap and dev navigation reference.
+      Remove or restrict it in production.
+    </div>
+  </div>
+  <script>
+  function redirectToPage(element) {
+    const targetUrl = element.getAttribute('data-url');
+    window.location.href = targetUrl;
+  }
+  </script>
+</body>
+</html>

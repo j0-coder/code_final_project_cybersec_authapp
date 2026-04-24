@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Account Locked — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="locked">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="big-icon danger">🔒</div>
+      <h1 style="color:var(--danger)">Account locked</h1>
+      <p>Too many failed login attempts</p>
+    </div>
+
+    <div class="lock-timer">
+      <div style="font-size:0.8125rem;margin-bottom:4px;">Try again in</div>
+      <div class="lock-timer-digits" id="lockCountdown">15:00</div>
+      <div class="lock-timer-label">minutes remaining</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar danger" id="lockBar" style="width:100%"></div>
+    </div>
+
+    <div class="step-box">
+      <p>What happened?</p>
+      <div class="step-line" style="color:var(--danger)">✗ 5 failed login attempts detected</div>
+      <div class="step-line" style="color:var(--danger)">✗ Possible brute-force or tailgating risk</div>
+      <div class="step-line" style="color:var(--success)">✓ Account suspended temporarily for your safety</div>
+    </div>
+
+    <button class="btn btn-outline" onclick="window.location.href='forgot.html'" style="margin-bottom:0.5rem">
+      Reset via email instead
+    </button>
+    <button class="btn btn-outline" onclick="window.location.href='#'">
+      Contact support
+    </button>
+
+    <div class="note">
+      Your IP address and event timestamp have been logged.
+      Security team has been notified per OWASP account lockout policy.
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

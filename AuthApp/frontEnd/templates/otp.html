@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verify OTP — AuthApp</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+<body class="auth-page" data-page="otp">
+
+  <div class="auth-card">
+
+    <a class="back-link" href="login.html">← Back to login</a>
+
+    <div class="brand">
+      <div class="brand-icon">OTP</div>
+      <h1>Check your inbox</h1>
+      <p>We sent a 6-digit code to <strong id="otpMaskedEmail">your email</strong></p>
+    </div>
+
+    <div id="otpAlert" class="alert alert-danger" style="display:none"></div>
+
+    <div class="otp-group">
+      <input class="otp-input" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code"/>
+      <input class="otp-input" type="text" inputmode="numeric" maxlength="1"/>
+      <input class="otp-input" type="text" inputmode="numeric" maxlength="1"/>
+      <input class="otp-input" type="text" inputmode="numeric" maxlength="1"/>
+      <input class="otp-input" type="text" inputmode="numeric" maxlength="1"/>
+      <input class="otp-input" type="text" inputmode="numeric" maxlength="1"/>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar info" id="otpTimerBar" style="width:100%"></div>
+    </div>
+    <p class="text-sm text-muted text-center" id="otpTimerLabel" style="margin-bottom:1rem">Code expires in 60s</p>
+
+    <button class="btn btn-primary" id="otpBtn" disabled>Verify code</button>
+
+    <div style="text-align:center;margin-top:0.75rem">
+      <span class="badge badge-warning" id="otpAttempts">5 attempts remaining</span>
+    </div>
+
+    <div class="footer-link" style="margin-top:0.875rem">
+      Didn't receive it? <a href="#" id="resendBtn">Resend code</a>
+    </div>
+
+    <div class="note">
+      After 5 incorrect attempts your account will be temporarily locked.
+      Codes are valid for 60 seconds only.
+    </div>
+
+  </div>
+
+  <button type="button" onclick="window.location.href='appkey.html'">Verify</button>
+</body>
+</html>
