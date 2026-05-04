@@ -73,11 +73,6 @@
       Remove or restrict it in production.
     </div>
   </div>
-  <script>
-  function redirectToPage(element) {
-    const targetUrl = element.getAttribute('data-url');
-    window.location.href = targetUrl;
-  }
-  </script>
+  <script src="{% static 'script.js' %}"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 </head>
 <body class="auth-page" data-page="appkey">
   <div class="auth-card">
-    <a class="back-link" href="dashboard.html">← Back to dashboard</a>
+    <a class="back-link" data-url="{% url 'dashboard' %}", onclick="redirectToPage(this)">← Back to dashboard</a>
     <div class="brand">
       <div class="brand-icon">⚿</div>
       <h1>Your App Key</h1>
@@ -57,7 +57,7 @@
       <button class="btn btn-outline" id="logoutNowBtn">Log out now</button>
     </div>
   </div>
-
+  <script src="{% static 'script.js' %}"></script>
   <button type="button" onclick="window.location.href='dashboard.html'">Finalize Setup</button>
 </body>
 </html>

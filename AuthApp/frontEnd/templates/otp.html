@@ -11,7 +11,7 @@
 
   <div class="auth-card">
 
-    <a class="back-link" href="login.html">← Back to login</a>
+    <a class="back-link", data-url="{% url 'login' %}" onclick="redirectToPage(this)">← Back to login</a>
 
     <div class="brand">
       <div class="brand-icon">OTP</div>
@@ -33,7 +33,7 @@
     <div class="progress-wrap">
       <div class="progress-bar info" id="otpTimerBar" style="width:100%"></div>
     </div>
-    <p class="text-sm text-muted text-center" id="otpTimerLabel" style="margin-bottom:1rem">Code expires in 60s</p>
+    <p class="text-sm text-muted text-center" id="otpTimerLabel" style="margin-bottom:1rem">Code expires in <span id="timerCount">300</span>s</p>
 
     <button class="btn btn-primary" id="otpBtn" disabled>Verify code</button>
 
@@ -47,11 +47,10 @@
 
     <div class="note">
       After 5 incorrect attempts your account will be temporarily locked.
-      Codes are valid for 60 seconds only.
+      Codes are valid for 5 minutes only.
     </div>
-
   </div>
 
-  <button type="button" onclick="window.location.href='appkey.html'">Verify</button>
+  <script src="{% static 'script.js' %}"></script>
 </body>
 </html>

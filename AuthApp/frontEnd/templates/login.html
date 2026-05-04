@@ -42,15 +42,20 @@
         <span class="field-error" style="display:none"></span>
       </div>
 
-      <div class="footer-link" style="margin-bottom:1rem">
-        <a href="forgot.html">Forgot your password?</a>
-      </div>
+    <div class="footer-link" style="margin-bottom:1rem">
+      <a href="#" data-url="{% url 'forgotPage' %}" onclick=redirectToPage(this)>
+        Forgot your password?
+      </a>
+    </div>
 
       <button class="btn btn-primary" type="submit" id="loginBtn">Sign in</button>
     </form>
 
     <div class="footer-link">
-      Don't have an account? <a href="signup.html">Sign up</a>
+      Don't have an account? 
+      <a href="#" data-url="{% url 'signup' %}" onclick=redirectToPage(this)>
+        Sign up
+      </a>
     </div>
 
     <!-- SSO buttons — clicking calls ssoLogin() in app.js -->
@@ -76,7 +81,7 @@
     </div>
 
   </div>
-
+  <script src="{% static 'script.js' %}"></script>
   <form onsubmit="event.preventDefault(); window.location.href='otp.html';">
 </body>
 </html>

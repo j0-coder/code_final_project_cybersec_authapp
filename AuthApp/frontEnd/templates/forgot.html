@@ -9,7 +9,7 @@
 </head>
 <body class="auth-page" data-page="forgot">
   <div class="auth-card">
-    <a class="back-link" href="login.html">← Back to login</a>
+    <a class="back-link" data-url="{% url 'login' %}", onclick=redirectToPage(this)>← Back to login</a>
     <div class="brand">
       <div class="brand-icon warning">?</div>
       <h1>Reset your password</h1>
@@ -36,10 +36,11 @@
         <div class="step-line">3. Set a new password &amp; verify with OTP</div>
       </div>
       <button class="btn btn-primary" type="submit" id="forgotBtn">Send reset link</button>
-      <button class="btn btn-outline" type="button" onclick="window.location.href='login.html'">Back to login</button>
+      <button class="btn btn-outline" type="button" data-url="{% url 'login' %}", onclick=redirectToPage(this)>Back to login</button>
     </form>
     <div class="note">For security, we never confirm whether an email is registered.</div>
   </div>
+  <script src="{% static 'script.js' %}"></script>
   <form onsubmit="event.preventDefault(); window.location.href='login.html';">
 </body>
 </html>

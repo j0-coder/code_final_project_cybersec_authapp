@@ -1,8 +1,8 @@
 from django.urls import path
-from frontEnd import views
+from . import views
 
 urlpatterns = [
-    path('home', views.webHomePage),
+    path('home', views.webHomePage, name='home'),
     path('login', views.loginPage, name='login'),
     path('signup', views.signupPage, name='signup'),
     path('dashboard', views.dashBoardPage, name='dashboard'),
@@ -13,4 +13,6 @@ urlpatterns = [
     path('locked', views.lockedPage, name='lockedPage'),
     path('appkey', views.appKeyPage, name='appkeyPage'),
     path('tc', views.termsAndConditionsPage, name='tcPage'),
+    path('OTPDemo/', views.OTPGenerator, name='otpDemo'),
+    path('OTPValidate/', views.OTPValidate, name='otpValidate'),
 ]

@@ -34,8 +34,8 @@
       </div>
     </div>
 
-    <button class="btn btn-danger" onclick="window.location.href='login.html'">Try again</button>
-    <button class="btn btn-outline" onclick="window.location.href='forgot.html'">Reset my password</button>
+    <button class="btn btn-danger" data-url="{% url 'login' %}", onclick="redirectToPage(this)">Try again</button>
+    <button class="btn btn-outline" data-url="{% url 'forgotPage' %}", onclick="redirectToPage(this)">Reset my password</button>
 
     <div class="note">
       After 5 failed attempts your account will be locked for 15 minutes.
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <script src="../js/app.js"></script>
+  <script src="{% static 'script.js' %}"></script>
   <script>
     // Read attempt data passed from login page via URL params
     const p = new URLSearchParams(window.location.search);

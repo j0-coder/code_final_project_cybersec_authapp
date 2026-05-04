@@ -9,7 +9,7 @@
 </head>
 <body class="auth-page" data-page="tc">
   <div class="auth-card">
-    <a class="back-link" href="signup.html">← Back to sign up</a>
+    <a class="back-link" data-url="{% url 'signup' %}" onclick=redirectToPage(this)>← Back to sign up</a>
     <div class="brand">
       <div class="brand-icon">T&amp;C</div>
       <h1>Terms &amp; Conditions</h1>
@@ -57,21 +57,22 @@
       I agree to receive security updates and product news via email
     </label>
 
-    <button class="btn btn-primary" id="acceptBtn" onclick="acceptTC()" disabled>
+    <button class="btn btn-primary" id="acceptBtn" data-url="{% url 'signup' %}", onclick="acceptTC(this)" disabled>
       Accept &amp; continue
     </button>
-    <button class="btn btn-outline" onclick="window.location.href='signup.html'">
+    <button class="btn btn-outline" data-url="{% url 'signup' %}", onclick=redirectToPage(this)>
       Decline
     </button>
   </div>
 
+  <script src="{% static 'script.js' %}"></script>
   <script>
     document.getElementById('tcCheck').addEventListener('change', function() {
       document.getElementById('acceptBtn').disabled = !this.checked;
     });
-    function acceptTC() {
+    function acceptTC(element) {
       sessionStorage.setItem('tcAccepted', 'true');
-      window.location.href = 'signup.html';
+      redirectToPage(element);
     }
   </script>
 </body>

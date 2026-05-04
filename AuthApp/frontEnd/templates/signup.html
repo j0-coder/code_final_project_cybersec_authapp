@@ -11,7 +11,7 @@
 
   <div class="auth-card">
 
-    <a class="back-link" href="login.html">← Back to login</a>
+    <a class="back-link" data-url="{% url 'login' %}", onclick="redirectToPage(this)">← Back to login</a>
 
     <div class="brand">
       <div class="brand-icon">✦</div>
@@ -104,8 +104,8 @@
 
       <label class="checkbox-row">
         <input type="checkbox" id="termsCheck"/>
-        I agree to the <a href="tc.html" target="_blank">Terms &amp; Conditions</a>
-        and <a href="#" target="_blank">Privacy Policy</a>
+        I agree to the <a data-url="{% url 'tcPage' %}", onclick=redirectToPage(this) target="_blank">Terms &amp; Conditions</a>
+        and <a data-url="{% url 'tcPage' %}", onclick=redirectToPage(this) target="_blank">Privacy Policy</a>
       </label>
 
       <label class="checkbox-row">
@@ -118,11 +118,14 @@
     </form>
 
     <div class="footer-link">
-      Already have an account? <a href="login.html">Sign in</a>
+      Already have an account? 
+      <a data-url="{% url 'login' %}", onclick=redirectToPage(this)>
+        Sign in
+      </a>
     </div>
-
   </div>
 
+  <script src="{% static 'script.js' %}"></script>
   <form onsubmit="event.preventDefault(); window.location.href='success.html';">
 </body>
 </html>

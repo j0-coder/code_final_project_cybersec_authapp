@@ -69,6 +69,7 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  justify-content: center;
 }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -411,7 +412,7 @@ img { max-width: 100%; }
 
 /* ── Footer link row ── */
 .footer-link { text-align: center; font-size: 0.8125rem; color: var(--text2); margin-top: 1rem; }
-.footer-link a { color: var(--accent); font-weight: 500; }
+.footer-link a { cursor: pointer; color: var(--accent); font-weight: 500; cursor: pointer;}
 
 /* ── Requirements Checklist ── */
 .req-list { background: var(--bg); border-radius: var(--radius); padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.8125rem; }

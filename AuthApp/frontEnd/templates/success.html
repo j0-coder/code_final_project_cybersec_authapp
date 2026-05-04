@@ -47,13 +47,12 @@
       Redirecting to dashboard in <span id="redirectCount">3</span>s…
     </p>
 
-    <button class="btn btn-primary" style="margin-top:0.75rem"
-            onclick="window.location.href='dashboard.html'">
+    <button class="btn btn-primary" style="margin-top:0.75rem" data-url="{% url 'dashboard' %}", onclick="redirectToPage(this)">
       Go to dashboard
     </button>
   </div>
 
-  <a href="login.html" class="btn">Return to Login</a>
+  <script src="{% static 'script.js' %}"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const user = getUser();

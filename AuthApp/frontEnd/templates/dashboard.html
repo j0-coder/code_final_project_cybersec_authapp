@@ -104,23 +104,28 @@
     .pg-row { display: flex; gap: 4px; }
     .pg-btn { padding: 4px 9px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg2); font-size: 0.8125rem; cursor: pointer; font-family: var(--font-sans); color: var(--text2); }
     .pg-btn.active { background: var(--text); color: var(--bg2); border-color: var(--text); }
+    .act-as-home-button { cursor: pointer; width: 80px; height: auto;}
   </style>
 </head>
 <body data-page="dashboard">
 
   <!-- Top navigation -->
   <nav class="topnav">
-    <div class="topnav-logo">AuthApp</div>
+    <div class="topnav-logo">
+      <div class="act-as-home-button" data-url="{% url 'home' %}", onclick="redirectToPage(this)">
+        AuthApp
+      </div>
+    </div>
     <div class="topnav-nav">
       <div class="nav-link active">Dashboard</div>
-      <div class="nav-link" onclick="window.location.href='appkey.html'">App Key</div>
-      <div class="nav-link" onclick="window.location.href='toc.html'">All pages</div>
+      <div class="nav-link" data-url="{% url 'appkeyPage' %}", onclick="redirectToPage(this)">App Key</div>
+      <div class="nav-link" data-url="{% url 'home' %}", onclick="redirectToPage(this)">All pages</div>
     </div>
     <div class="topnav-user">
       <div class="avatar" id="dashAvatar" style="width:32px;height:32px;font-size:0.8125rem">JD</div>
       <span class="topnav-name" id="dashUserName">Loading…</span>
     </div>
-    <button class="topnav-logout" id="navLogout">Log out</button>
+    <button class="topnav-logout" id="navLogout" data-url="{% url 'login' %}", onclick="redirectToPage(this)">Log out</button>
   </nav>
 
   <main class="dash-main">
@@ -168,7 +173,7 @@
           <option value="Locked">Locked</option>
           <option value="Inactive">Inactive</option>
         </select>
-        <button class="dg-btn primary" onclick="window.location.href='signup.html'">+ Add user</button>
+        <button class="dg-btn primary" data-url="{% url 'signup' %}", onclick=redirectToPage(this)>+ Add user</button>
       </div>
       <div style="overflow-x:auto">
         <table class="dg-table" id="dgTable">
@@ -212,65 +217,9 @@
     </div>
   </div>
 
-  <a href="login.html">Logout</a>
-  <script>
-    /* ── Sample user data (replace with API call to GET /api/users) ── */
-    const USERS = [
-      { name: 'Juan Dela Cruz', email: 'juan@example.com',  role: 'Admin', status: 'Active',   last: 'Today, 2:14 PM',     tfa: true,  initials: 'JD', color: 'var(--accent-bg)', colorText: 'var(--accent)' },
-      { name: 'Maria Reyes',    email: 'maria@example.com', role: 'User',  status: 'Active',   last: 'Apr 16, 9:00 AM',    tfa: true,  initials: 'MR', color: 'var(--success-bg)', colorText: 'var(--success)' },
-      { name: 'Carlo Santos',   email: 'carlo@example.com', role: 'User',  status: 'Locked',   last: 'Apr 15, 6:33 PM',    tfa: false, initials: 'CS', color: 'var(--danger-bg)',  colorText: 'var(--danger)' },
-      { name: 'Ana Lim',        email: 'ana@example.com',   role: 'User',  status: 'Inactive', last: 'Apr 10, 11:20 AM',   tfa: false, initials: 'AL', color: 'var(--warning-bg)', colorText: 'var(--warning)' },
-      { name: 'Ben Torres',     email: 'ben@example.com',   role: 'Admin', status: 'Active',   last: 'Today, 8:01 AM',     tfa: true,  initials: 'BT', color: 'var(--accent-bg)', colorText: 'var(--accent)' },
-    ];
-
-    function pillClass(status) {
-      return { Active: 'pill-active', Locked: 'pill-locked', Inactive: 'pill-inactive' }[status] || '';
-    }
-
-    function renderTable(data) {
-      const body = document.getElementById('dgBody');
-      body.innerHTML = data.map(u => `
-        <tr>
-          <td><input type="checkbox"/></td>
-          <td>
-            <div class="u-cell">
-              <div class="u-avatar" style="background:${u.color};color:${u.colorText}">${u.initials}</div>
-              <div>
-                <div class="u-name">${u.name}</div>
-                <div class="u-email">${u.email}</div>
-              </div>
-            </div>
-          </td>
-          <td><span class="pill ${u.role === 'Admin' ? 'pill-admin' : 'pill-user'}">${u.role}</span></td>
-          <td><span class="pill ${pillClass(u.status)}">${u.status}</span></td>
-          <td style="color:var(--text2)">${u.last}</td>
-          <td style="color:${u.tfa ? 'var(--success)' : 'var(--danger)'}">${u.tfa ? '✓ On' : '✗ Off'}</td>
-          <td>
-            <span class="act-link">Edit</span>
-            <span class="act-link danger">${u.status === 'Locked' ? 'Unlock' : 'Lock'}</span>
-          </td>
-        </tr>
-      `).join('');
-      document.getElementById('dgCount').textContent = `Showing ${data.length} of ${USERS.length} users`;
-    }
-
-    function filterTable() {
-      const q      = document.getElementById('dgSearch').value.toLowerCase();
-      const role   = document.getElementById('dgRole').value;
-      const status = document.getElementById('dgStatus').value;
-      const filtered = USERS.filter(u =>
-        (!q      || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)) &&
-        (!role   || u.role   === role) &&
-        (!status || u.status === status)
-      );
-      renderTable(filtered);
-    }
-
-    function toggleAll(master) {
-      document.querySelectorAll('#dgBody input[type=checkbox]').forEach(cb => cb.checked = master.checked);
-    }
-
-    renderTable(USERS);
+  <script src="{% static 'script.js' %}"></script>
+  <script> 
+    renderTable(USERS); 
   </script>
 </body>
 </html>

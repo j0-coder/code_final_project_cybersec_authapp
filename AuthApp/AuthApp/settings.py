@@ -15,9 +15,9 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-maxOTPAttempts = 3
-authUserModel = 'frontEnd.UserModel'
-minPasswordLength = 8
+# MAX_OTP_ATTEMPTS = 3
+# AUTH_USER_MODEL = 'frontEnd.UserModel'
+# MIN_PASSWORD_LENGTH = 8
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
