@@ -1,42 +1,52 @@
-# from django.db import models
-# from django.conf import settings
-# from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
-# from django.core.validators import RegexValidator, validate_email as validateEmail
+from django.db import models
 
-# # Create your models here.
+class User(models.Model):
+    user_id = models.AutoField(primary_key=True)
+    user_email = models.EmailField(unique=True)
+    user_name = models.CharField(max_length=100, null=True, blank=True)
+    # userPhone = models.CharField(max_length=100, null=True, blank=True)
+    password = models.TextField()
+    verified_status = models.BooleanField(default=False)
+    account_registration = models.DateTimeField(auto_now_add=True)
 
-# phoneRegex = RegexValidator(regex=r'^\+639?1?\d{12}$', message="Phone number must be entered in the format: '+639999999999'.")
-# # validateEmail = RegexValidator(regex=r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', message="Invalid email address")
+    class Meta: 
+        db_table = 'user_table'
 
-# class UserTypeManager(BaseUserManager):
-#     def create_user(self, phoneNumber, password=None):
-#         if not phoneNumber:
-#             raise ValueError('Users must have a phone number')
-#         user = self.model(phoneNumber=phoneNumber)
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
-#     def create_superuser(self, phoneNumber, password):
-#         user = self.create_user(phoneNumber, password)
-#         user.isAdmin = True; user.isActive = True
-#         user.save(using=self._db)
-#         return user
+class Session(models.Model):
+    session_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    last_active = models.DateTimeField(auto_now=True)
+    session_expiry = models.DateTimeField()
+    ip_address = models.GenericIPAddressField()
+    access_revoked = models.BooleanField(default=False)
 
-# class UserModel(AbstractBaseUser, PermissionsMixin):
-#     email = models.EmailField(validators=[validateEmail], max_length=255, blank=True, null=True)
-#     phoneNumber = models.CharField(validators=[phoneRegex], max_length=12, blank=False, null=False, unique=True)
-#     OTPNum = models.CharField(max_length=6)
-#     OTPExpiry = models.DateTimeField(blank=True, null=True)
-#     OTPAttempts = models.CharField(default=0); OTPCooldown = models.DateTimeField(blank=True, null=True)
-    
-#     isActive = models.BooleanField(default=False)
-#     isAdmin = models.BooleanField(default=False)
-#     userRegisterTime = models.DateTimeField(auto_now_add=True)
+    class Meta: 
+        db_table = 'session_table'
+        indexes = [
+            models.Index(fields=['user']), 
+            models.Index(fields=['session_expiry'])
+        ]
 
+class OTP(models.Model):
+    otp_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    otp_code = models.CharField(max_length=6)
+    otp_expiry = models.DateTimeField()
+    attempts = models.IntegerField(default=0)
 
-#     objects = UserTypeManager()
-#     USERNAME_FIELD = 'phoneNumber'
-#     REQUIRED_FIELDS = ['phoneNumber']
+    class Meta: 
+        db_table = 'otp_table'
+        indexes = [
+            models.Index(fields=['user']), 
+            models.Index(fields=['otp_code'])
+        ]
 
-#     def __str__(self):
-#         return self.phoneNumber
+class Appkey(models.Model):
+    appkeyID = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    appkey = models.TextField()
+    creation_date = models.DateTimeField(auto_now_add=True)
+    revoked_status = models.BooleanField(default=False)
+
+    class Meta: 
+        db_table = 'appkey_table'
