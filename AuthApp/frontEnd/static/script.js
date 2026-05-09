@@ -60,7 +60,7 @@ const USERS = [
     { name: 'Ben Torres',     email: 'ben@example.com',   role: 'Admin', status: 'Active',   last: 'Today, 8:01 AM',     tfa: true,  initials: 'BT', color: 'var(--accent-bg)', colorText: 'var(--accent)' },
 ];
 
-// FOR OTP; DONT MODIFY
+// FOR OTP; CURRENTLY ONLY HANDLES THE VERIFICATION LOGIC, -- UNFINISHED, DATABASE STILL NEEDED FOR A "REAL" DEMONSTRATION
 document.addEventListener("DOMContentLoaded", () => {
     const userInputs = document.querySelectorAll(".otp-input");
     const verifyButton = document.getElementById("otpBtn");
