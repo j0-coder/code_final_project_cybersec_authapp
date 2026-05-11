@@ -23,7 +23,8 @@
     <!-- Alert area (errors shown here by JS) -->
     <div id="loginAlert" class="alert alert-danger" style="display:none"></div>
 
-    <form id="loginForm" novalidate>
+    <form method= "POST" action="{% url 'login' %}" id="loginForm" novalidate>
+      {% csrf_token %}
       <div class="field">
         <label class="field-label" for="email">Email address</label>
         <input class="field-input" type="email" id="email" name="email"

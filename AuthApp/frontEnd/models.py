@@ -1,10 +1,12 @@
 from django.db import models
+from datetime import datetime, timedelta
+
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     user_email = models.EmailField(unique=True)
     user_name = models.CharField(max_length=100, null=True, blank=True)
-    # userPhone = models.CharField(max_length=100, null=True, blank=True)
+    user_phone = models.CharField(max_length=100, null=True, blank=True)
     password = models.TextField()
     verified_status = models.BooleanField(default=False)
     account_registration = models.DateTimeField(auto_now_add=True)
@@ -31,8 +33,8 @@ class OTP(models.Model):
     otp_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     otp_code = models.CharField(max_length=6)
-    otp_expiry = models.DateTimeField()
-    attempts = models.IntegerField(default=0)
+    otp_expiry = models.DateTimeField(default=datetime.now() + timedelta(minutes = 5))
+    # attempts = models.IntegerField(default=0)
 
     class Meta: 
         db_table = 'otp_table'

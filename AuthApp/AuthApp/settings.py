@@ -86,11 +86,14 @@ WSGI_APPLICATION = 'AuthApp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgrestestdb',
-        'USER': 'postgrestest',
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.environ.get('SECRET_DB'),
+        'USER': os.environ.get('SECRET_USER'),
+        'PASSWORD': os.environ.get('SECRET_PASSWORD'),
+        'HOST': os.environ.get('SECRET_HOST'),
+        'PORT': os.environ.get('SECRET_PORT'),
+        'OPTIONS' : {
+            'options': os.environ.get('SECRET_SCHEMA')
+        }
     }
 }
 

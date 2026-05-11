@@ -13,6 +13,6 @@ urlpatterns = [
     path('locked', views.lockedPage, name='lockedPage'),
     path('appkey', views.appKeyPage, name='appkeyPage'),
     path('tc', views.termsAndConditionsPage, name='tcPage'),
-    path('OTPDemo/', views.OTPGenerator, name='otpDemo'),
+    # path('OTPDemo/', views.OTPGenerator, name='otpDemo'),
     path('OTPValidate/', views.OTPValidate, name='otpValidate'),
 ]

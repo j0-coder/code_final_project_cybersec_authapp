@@ -79,10 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     verifyButton.addEventListener("click", () => {
         const otpCode = Array.from(userInputs).map(input => input.value).join("");
+        const email = document.getElementById("email").value;
         fetch("OTPValidate/",{
             method: "POST",
             headers: {"Content-Type" : "application/x-www-form-urlencoded"},
-            body: `OTPCode=${otpCode}`
+            body: `OTPCode=${otpCode}&email=${encodeURIComponent(email)}`
         })
         .then(result => result.json())
         .then(data => {
@@ -90,6 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 alertBox.style.display = "block";
                 alertBox.className = "alert alert-success";
                 alertBox.textContent = "OTP verified successfully!";
+                setTimeout( () => {
+                    window.location.href = "/app/dashboard";
+                }, 2000)
             } else {
                 alertBox.style.display = "block";
                 alertBox.className = "alert alert-danger";
