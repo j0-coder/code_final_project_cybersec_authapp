@@ -21,9 +21,6 @@ dotenv.read_dotenv()
 env = environ.Env()
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
-# MAX_OTP_ATTEMPTS = 3
-# AUTH_USER_MODEL = 'frontEnd.UserModel'
-# MIN_PASSWORD_LENGTH = 8
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -35,6 +32,17 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+# Email Settings
+
+DEFAULT_FROM_EMAIL = 'AuthApp <authapp.notifications@gmail.com>'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 # Application definition

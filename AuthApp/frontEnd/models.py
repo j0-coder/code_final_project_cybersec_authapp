@@ -32,10 +32,10 @@ class Session(models.Model):
 class OTP(models.Model):
     otp_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    otp_code = models.CharField(max_length=6)
-    otp_expiry = models.DateTimeField(default=datetime.now() + timedelta(minutes = 5))
-    # attempts = models.IntegerField(default=0)
-
+    otp_code = models.TextField()
+    code_status = models.BooleanField(default=False)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    
     class Meta: 
         db_table = 'otp_table'
         indexes = [
