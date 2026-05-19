@@ -1,0 +1,31 @@
+version: '3.8'
+
+authAppWeb:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  container_name: AuthAppWebInterface
+  command: python manage.py runserver 0.0.0.0:8080
+  ports:
+    - "8080:8080"
+  volumes:
+    - .:/app
+  env_file:
+    - .env
+  depends_on:
+    - projectDB
+
+projectDB:
+  image: postgres:latest
+  container_name: AuthAppDB
+  environment:
+    POSTGRES_USER: ${POSTGRES_USER}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    POSTGRES_DB: ${POSTGRES_DB}
+  ports:
+    - "5432:5432"
+  volumes:
+    - projectDBContents:/var/lib/postgresql/data
+
+volumes:
+  projectDBContents:
