@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password, check_password
 import random; from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta
-from .models import User, OTP
+from .models import User, OTP, isExpired
 from AuthApp.settings import EMAIL_HOST_USER
 
 
@@ -30,11 +30,19 @@ def OTPValidate(request):
     userEmail = request.POST.get('email'); enteredCode = request.POST["OTPCode"]
 
     pendingConfirmation = request.session.get('pendingUser')
-    expirationTimeOTP = request.session.get('otpExpiry')
+    otpExpiry = request.session.get('otpExpiry')
+    if not otpExpiry:
+        return JsonResponse({"valid": False, "message": "No OTP found"})
+    
+    otpCode = datetime.fromisoformat(otpExpiry)
+    result = isExpired(otpCode)
+    if result["expired"]:
+        return JsonResponse({"valid": False, "message": "OTP has expired"})
 
     if not pendingConfirmation or pendingConfirmation['user_email'] != userEmail:
         return JsonResponse({"valid": False, "message": "No ongoing sessions found"})
-    if enteredCode == pendingConfirmation['otp_code'] and datetime.fromisoformat(expirationTimeOTP) > datetime.now():
+
+    if enteredCode == pendingConfirmation['otp_code']:
         userAccount = User.objects.create(
             user_email = pendingConfirmation['user_email'],
             user_name = pendingConfirmation['user_name'],
@@ -42,7 +50,7 @@ def OTPValidate(request):
             password = pendingConfirmation['password'],
             verified_status = True
         )
-        otpCode = OTP.objects.create(
+        otpRecord = OTP.objects.create(
             user = userAccount,
             otp_code = make_password(pendingConfirmation['otp_code']),
             code_status = True,
@@ -52,17 +60,6 @@ def OTPValidate(request):
         return JsonResponse({"valid": True, "message": "OTP is valid"})
     else:
         return JsonResponse({"valid": False, "message": "Invalid OTP"})
-    # try:
-    #     user = User.objects.get(user_email = user_email)
-    #     otp = OTP.objects.filter(user = user).latest('otp_expiry')
-    #     if enteredCode == otp.otp_code and otp.otp_expiry > datetime.now():
-    #         user.verified_status = True
-    #         user.save()
-    # #         return JsonResponse({"valid": True, "message": "OTP is valid"})
-    # #     else:
-    # #         return JsonResponse({"valid": False, "message": "Invalid OTP"})
-    # except User.DoesNotExist:
-    #     return JsonResponse({"valid": False, "message": "User does not exist"})
 
 # Create your views here.
 def webHomePage(request):
@@ -96,20 +93,6 @@ def signupPage(request):
 
         if userPassword != passwordConfirmation:
             return render(request, 'signup.html', {'error': 'Passwords do not match'})
-        # else:
-        #     user = User.objects.create(
-        #         user_email=user_email,
-        #         user_name=user_name,
-        #         user_phone=user_phone,
-        #         password=password
-        #     ); otp_code = str(random.randint(100000,999999))
-        #     OTP.objects.create(
-        #         user = user,
-        #         otp_code = otp_code,
-        #         otp_expiry = datetime.now() + timedelta(seconds = 5)
-        #     ); 
-        #     print(f"OTP: {otp_code}")
-        #     return render(request, 'otp.html', {'user': user, 'otp_code': otp_code, 'email': user_email})
         otpCode = str(random.randint(100000,999999))
         request.session['pendingUser'] = {
             'user_email': userEmail,

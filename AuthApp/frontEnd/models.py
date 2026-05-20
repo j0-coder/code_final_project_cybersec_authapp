@@ -1,5 +1,19 @@
 from django.db import models
 from django.utils import timezone
+from datetime import timedelta
+
+# HELPER FUNCTIONS
+
+def isExpired(creationTime, minutes= 5):
+    if creationTime.tzinfo is None: 
+        creationTime = timezone.make_aware(creationTime)
+        
+    expiryCountdown = creationTime + timedelta(minutes = minutes)
+    timeLeft = ((expiryCountdown - timezone.now()).total_seconds())
+    return {
+        "expired" : timeLeft <= 0,
+        "remainingTime" : max(0, int(timeLeft))
+    }
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
