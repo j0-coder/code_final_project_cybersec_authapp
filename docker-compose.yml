@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: AuthAppWebInterface
-    command: python manage.py runserver 0.0.0.0:8080
+    command: /app/waitForDatabase.sh
     ports:
       - "8080:8080"
     volumes:
@@ -30,6 +30,7 @@ services:
       - "5432:5432"
     volumes:
       - projectDBContents:/var/lib/postgresql
+      - ./initializeSchema.sql:/docker-entrypoint-initdb.d/initializeSchema.sql
 
 volumes:
   projectDBContents:

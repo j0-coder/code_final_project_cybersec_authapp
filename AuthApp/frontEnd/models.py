@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
@@ -33,7 +33,7 @@ class OTP(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     otp_code = models.TextField()
     code_status = models.BooleanField(default=False)
-    creation_date = models.DateTimeField(auto_now_add=True)
+    creation_date = models.DateTimeField(default=timezone.now)
     
     class Meta: 
         db_table = 'otp_table'
